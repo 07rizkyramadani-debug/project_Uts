@@ -34,7 +34,7 @@ Jangan commit berkas `.env` ke GitHub.
 |---|---|---|
 | Admin | admin@example.com | password123 |
 | Pustakawan | pustakawan@example.com | password123 |
-| User | user@example.com | password123 (sudah tertaut ke satu anggota) |
+| User | user@example.com | password123  |
 
 ## Hak akses (RBAC)
 | Fitur | Admin | Pustakawan | User |
