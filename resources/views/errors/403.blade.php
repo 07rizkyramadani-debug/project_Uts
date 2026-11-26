@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('title', 'Akses ditolak')
+@section('code', '403')
+@section('heading', 'Akses ditolak')
+@section('message', $exception->getMessage() ?: 'Anda tidak memiliki hak akses untuk membuka halaman ini.')

@@ -1,0 +1,149 @@
+/* =====================================================================
+   Sistem animasi (Perpustakaan Digital) — dimuat di semua halaman setelah login
+   serta halaman login/register. Semua animasi dimatikan otomatis bila perangkat
+   memakai pengaturan "kurangi gerakan" (prefers-reduced-motion).
+   ===================================================================== */
+@property --p { syntax: '<number>'; inherits: false; initial-value: 0; }
+
+@keyframes moUp    { from { opacity: 0; transform: translateY(18px); } }
+@keyframes moDown  { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes moLeft  { from { opacity: 0; transform: translateX(-22px); } }
+@keyframes moPop   { from { opacity: 0; transform: scale(.92); } }
+@keyframes moFade  { from { opacity: 0; } }
+@keyframes moSpin  { to { transform: rotate(360deg); } }
+@keyframes moPulse { 0%, 100% { box-shadow: 0 0 0 0 var(--pulse, rgba(245,158,11,.45)); } 60% { box-shadow: 0 0 0 7px rgba(245,158,11,0); } }
+@keyframes moBarX  { from { transform: scaleX(0); } }
+@keyframes moBarY  { from { transform: scaleY(0); } }
+@keyframes moRing  { from { --p: 0; } }
+@keyframes moDonut { from { opacity: 0; transform: rotate(-140deg) scale(.7); } }
+@keyframes moFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-9px) rotate(var(--r, 0deg)); } }
+@keyframes moDrift { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(14px, -18px); } }
+@keyframes moProgress { to { width: 92%; } }
+@keyframes vtIn  { from { opacity: 0; } }
+@keyframes vtOut { to { opacity: 0; } }
+
+/* ---------- Transisi antar halaman (browser yang mendukung) ---------- */
+@view-transition { navigation: auto; }
+.topbar { view-transition-name: topbar; }
+::view-transition-old(root) { animation: .14s ease both vtOut; }
+::view-transition-new(root) { animation: .22s ease .04s both vtIn; }
+
+/* ---------- Masuk halaman: elemen muncul berurutan ---------- */
+.topbar { animation: moDown .5s cubic-bezier(.2,.7,.2,1) backwards; }
+:is(.page-head-inner, .stats, .pg-summary, .pg-tabs, .lib-tabs, .bk-grid, .mb-grid, .ln-grid, .ml-grid, .ms-grid, .cg-grid, .sr-grid, .cg-subs, .ms-chips, .lib-wrap, .dh-cols, .dh-books, .dh-shortcuts, .app-main .stack, .app-main .container) > * {
+    animation: moUp .6s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: 60ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(1) { animation-delay: 60ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(2) { animation-delay: 115ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(3) { animation-delay: 170ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(4) { animation-delay: 225ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(5) { animation-delay: 280ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(6) { animation-delay: 335ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(7) { animation-delay: 390ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(8) { animation-delay: 445ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(9) { animation-delay: 500ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(10) { animation-delay: 555ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(11) { animation-delay: 610ms; }
+:is(.stats,.pg-summary,.pg-tabs,.bk-grid,.mb-grid,.ln-grid,.ml-grid,.ms-grid,.cg-grid,.sr-grid,.cg-subs,.ms-chips,.lib-wrap,.dh-cols,.dh-books,.dh-shortcuts,.app-main .stack,.app-main .container,.page-head-inner,.lib-tabs) > :nth-child(12) { animation-delay: 665ms; }
+.dh-hero { animation: moPop .7s cubic-bezier(.2,.7,.2,1) backwards; }
+.alert { animation: moDown .45s cubic-bezier(.2,.7,.2,1) backwards; }
+.lib-pager, .bk-pager { animation: moFade .6s .3s backwards; }
+
+/* Muncul saat di-scroll (kelas ditambahkan oleh motion.js hanya untuk elemen di luar layar) */
+.mo { opacity: 0 !important; transform: translateY(22px) !important; animation: none !important; transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1) !important; }
+.mo-done { animation: none !important; }
+.mo.mo-in { opacity: 1 !important; transform: none !important; }
+
+/* ---------- Interaksi (hover / tekan) ---------- */
+.btn, .lib-btn, .bk-act, .pg-tab, .lib-tab, .qa-toggle { transition: transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .2s, background .2s, color .2s, border-color .2s; }
+.btn:hover, .lib-btn:hover, .bk-act:hover, .pg-tab:hover, .lib-tab:hover { transform: translateY(-2px); }
+.btn:active, .lib-btn:active, .bk-act:active { transform: translateY(0) scale(.97); }
+.stat, .pg-sum, .mb-card, .ln-card, .ml-card, .dh-shortcuts a, .dh-book { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s, border-color .25s; }
+.stat:hover, .pg-sum:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.ml-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.stat::after { transition: transform .5s cubic-bezier(.2,.7,.2,1); } .stat:hover::after { transform: scale(1.5); }
+.stat .stat-ico { transition: transform .3s cubic-bezier(.3,1.6,.5,1); } .stat:hover .stat-ico { transform: rotate(-8deg) scale(1.12); }
+.nav-links a { position: relative; } .nav-links a:not(.active)::after { content: ""; position: absolute; left: 50%; bottom: .22rem; width: 0; height: 2px; border-radius: 2px; background: var(--brand); transition: width .25s, left .25s; }
+.nav-links a:not(.active):hover::after { width: 55%; left: 22.5%; }
+.nav-links a svg { transition: transform .25s cubic-bezier(.3,1.6,.5,1); } .nav-links a:hover svg { transform: translateY(-2px) scale(1.12); }
+.brand-mark { transition: transform .35s cubic-bezier(.3,1.6,.5,1); } .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.08); }
+.avatar { transition: transform .25s cubic-bezier(.3,1.6,.5,1); } .user-chip:hover .avatar, .mb-card:hover .mb-avatar { transform: scale(1.1) rotate(-4deg); }
+.mb-avatar { transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.lib-table tbody tr { transition: background .15s, transform .15s; }
+.dh-item { transition: transform .2s, background .2s; border-radius: 10px; } .dh-item:hover { transform: translateX(4px); }
+.dh-book:hover .dh-book-cover { box-shadow: 0 26px 34px -16px rgba(15,23,42,.65); } .dh-book-cover { transition: box-shadow .3s; }
+.bk-media .bk-cover img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.input, .lib-form input, .lib-form select, .lib-form textarea { transition: border-color .2s, box-shadow .25s, transform .2s; }
+.lib-form input:focus, .lib-form select:focus, .lib-form textarea:focus, .input:focus { transform: translateY(-1px); }
+.sec-head a { transition: letter-spacing .2s, color .2s; } .sec-head a:hover { letter-spacing: .02em; }
+
+/* Status penting berdenyut halus */
+.lib-badge-amber { --pulse: rgba(245,158,11,.5); animation: moPulse 2.4s ease-out infinite; }
+.lib-badge-red { --pulse: rgba(239,68,68,.5); animation: moPulse 2s ease-out infinite; }
+.dh-dot-amber, .dh-dot-red { animation: moPulse 2.4s ease-out infinite; } .dh-dot-red { --pulse: rgba(239,68,68,.5); }
+
+
+/* ---------- Data Master & Laporan Stok ---------- */
+.ms-card, .cg-card, .sr-card { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s, border-color .25s; }
+.cg-sub, .ms-chip { animation: moPop .45s cubic-bezier(.2,.7,.2,1) backwards; }
+.cg-subs > :nth-child(1) { animation-delay: .28s; } .cg-subs > :nth-child(2) { animation-delay: .34s; } .cg-subs > :nth-child(3) { animation-delay: .4s; } .cg-subs > :nth-child(4) { animation-delay: .46s; } .cg-subs > :nth-child(n+5) { animation-delay: .52s; }
+.cg-ico { animation: moPop .6s cubic-bezier(.3,1.6,.5,1) .15s backwards; }
+.cg-add { animation: moFade .5s .5s backwards; }
+@keyframes moWiggle { 0%, 88%, 100% { transform: rotate(0) scale(1); } 91% { transform: rotate(-9deg) scale(1.15); } 94% { transform: rotate(8deg) scale(1.15); } 97% { transform: rotate(-4deg) scale(1.08); } }
+.sr-zero { animation: moWiggle 4.2s ease-in-out 1.2s infinite; }
+@keyframes moGlow { 0%, 100% { box-shadow: var(--shadow); } 50% { box-shadow: 0 0 0 4px rgba(245,158,11,.16), var(--shadow); } }
+.sr-open { animation: moUp .6s cubic-bezier(.2,.7,.2,1) backwards, moGlow 3.2s ease-in-out 1.2s infinite; }
+.sr-open:hover { animation: none; }
+.sr-card::before, .ln-card::before, .ml-card::before { transform-origin: top; animation: moBarY .7s cubic-bezier(.2,.7,.2,1) .2s backwards; }
+.cg-card::before { transform-origin: left; animation: moBarX .8s cubic-bezier(.2,.7,.2,1) .2s backwards; }
+.sr-resolved { animation: moPop .5s cubic-bezier(.3,1.6,.5,1) .3s backwards; }
+.cg-tools a, .cg-tools button, .cg-mini a, .cg-mini button { transition: background .15s, transform .15s, color .15s; }
+
+/* ---------- Grafik & indikator yang "tumbuh" ---------- */
+.bk-bar i, .mb-quota-row + .bk-bar i { transform-origin: left; animation: moBarX 1s cubic-bezier(.2,.7,.2,1) .35s backwards; }
+.dh-bar-fill { transform-origin: bottom; animation: moBarY .9s cubic-bezier(.2,.7,.2,1) backwards; }
+.dh-bar:nth-child(1) .dh-bar-fill { animation-delay: 0.33s; }
+.dh-bar:nth-child(2) .dh-bar-fill { animation-delay: 0.41s; }
+.dh-bar:nth-child(3) .dh-bar-fill { animation-delay: 0.49s; }
+.dh-bar:nth-child(4) .dh-bar-fill { animation-delay: 0.57s; }
+.dh-bar:nth-child(5) .dh-bar-fill { animation-delay: 0.65s; }
+.dh-bar:nth-child(6) .dh-bar-fill { animation-delay: 0.73s; }
+.dh-bar:nth-child(7) .dh-bar-fill { animation-delay: 0.81s; }
+.dh-ring { animation: moRing 1.2s cubic-bezier(.2,.7,.2,1) .3s backwards; }
+.dh-donut { animation: moDonut 1s cubic-bezier(.2,.7,.2,1) .25s backwards; } .dh-donut > span { animation: moFade .6s .7s backwards; }
+.dh-legend li { animation: moLeft .5s cubic-bezier(.2,.7,.2,1) backwards; }
+.dh-legend li:nth-child(1) { animation-delay: 0.58s; }
+.dh-legend li:nth-child(2) { animation-delay: 0.66s; }
+.dh-legend li:nth-child(3) { animation-delay: 0.74s; }
+.dh-legend li:nth-child(4) { animation-delay: 0.82s; }
+.dh-legend li:nth-child(5) { animation-delay: 0.90s; }
+.dh-legend li:nth-child(6) { animation-delay: 0.98s; }
+.dh-cover { animation: moFloat 7s ease-in-out infinite; } .dh-cover-2 { animation-delay: -2.2s; } .dh-cover-3 { animation-delay: -4.4s; }
+.dh-hero::before { animation: moDrift 14s ease-in-out infinite; } .dh-hero::after { animation: moDrift 18s ease-in-out -6s infinite; }
+
+/* ---------- Halaman login & register ---------- */
+.auth-panel > * { animation: moUp .6s cubic-bezier(.2,.7,.2,1) backwards; }
+.auth-panel > :nth-child(1) { animation-delay: .05s; } .auth-panel > :nth-child(2) { animation-delay: .12s; } .auth-panel > :nth-child(3) { animation-delay: .18s; }
+.auth-panel > :nth-child(4) { animation-delay: .24s; } .auth-panel > :nth-child(5) { animation-delay: .3s; } .auth-panel > :nth-child(6) { animation-delay: .36s; }
+.auth-panel form > .field { animation: moUp .55s cubic-bezier(.2,.7,.2,1) backwards; } .auth-panel form > .field:nth-of-type(1) { animation-delay: .22s; } .auth-panel form > .field:nth-of-type(2) { animation-delay: .3s; } .auth-panel form > .field:nth-of-type(3) { animation-delay: .38s; } .auth-panel form > .field:nth-of-type(4) { animation-delay: .46s; }
+.auth-aside > * { animation: moLeft .7s cubic-bezier(.2,.7,.2,1) backwards; } .auth-aside > :nth-child(2) { animation-delay: .12s; } .auth-aside > :nth-child(3) { animation-delay: .24s; }
+.auth-features li { animation: moLeft .6s cubic-bezier(.2,.7,.2,1) backwards; } .auth-features li:nth-child(1) { animation-delay: .35s; } .auth-features li:nth-child(2) { animation-delay: .47s; } .auth-features li:nth-child(3) { animation-delay: .59s; }
+.auth-aside::before { animation: moDrift 16s ease-in-out infinite; } .auth-aside::after { animation: moDrift 20s ease-in-out -8s infinite; }
+
+/* ---------- Indikator navigasi & tombol memuat ---------- */
+.mo-progress { position: fixed; z-index: 1000; top: 0; left: 0; height: 3px; width: 0; opacity: 0; pointer-events: none; background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899); box-shadow: 0 0 12px rgba(168,85,247,.7); border-radius: 0 3px 3px 0; }
+.mo-progress.on { opacity: 1; animation: moProgress 9s cubic-bezier(.08,.8,.2,1) forwards; }
+.is-loading { position: relative; color: transparent !important; pointer-events: none; }
+.is-loading > * { opacity: 0; }
+.is-loading::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1.05rem; height: 1.05rem; margin: -.525rem 0 0 -.525rem; border-radius: 50%; border: 2px solid rgba(79,70,229,.25); border-top-color: var(--brand); animation: moSpin .7s linear infinite; }
+:is(.btn-primary, .btn-danger, .lib-btn-primary, .bk-act-go, .btn-light).is-loading::after { border-color: rgba(255,255,255,.35); border-top-color: #fff; }
+.btn-light.is-loading::after { border-color: rgba(79,70,229,.25); border-top-color: var(--brand); }
+
+/* Pesan sukses menghilang halus */
+.alert.mo-out { overflow: hidden; opacity: 0; transform: translateY(-8px); max-height: 0 !important; margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; border-width: 0; transition: opacity .35s, transform .35s, max-height .45s, margin .45s, padding .45s, border-width .45s; }
+
+/* ---------- Hormati pengaturan "kurangi gerakan" ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+    .mo { opacity: 1 !important; transform: none !important; }
+    @view-transition { navigation: none; }
+}
