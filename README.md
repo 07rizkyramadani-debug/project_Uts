@@ -34,12 +34,11 @@ php artisan serve
 Jangan commit berkas `.env` ke GitHub.
 
 ## Akun contoh (seeder)
-
-| Peran      | Email                  | Password                                     |
-| ---------- | ---------------------- | -------------------------------------------- |
-| Admin      | admin@example.com      | password123                                  |
-| Pustakawan | pustakawan@example.com | password123                                  |
-| User       | user@example.com       | password123 (otomatis menjadi anggota aktif) |
+| Peran | Email | Password |
+|---|---|---|
+| Admin | admin@example.com | password123 |
+| Pustakawan | pustakawan@example.com | password123 |
+| User | user@example.com | password123  |
 
 ## Hak akses (RBAC)
 
@@ -104,18 +103,6 @@ Alamat `/` menampilkan halaman awal publik (`WelcomeController`, `resources/view
 - **Tambah buku (admin)**: penerbit, penulis, dan kategori baru bisa dibuat langsung dari form lewat tombol "＋ ... baru" (AJAX ke `POST /publishers`, `/authors`, `/categories` yang mengembalikan JSON `201`), lalu otomatis terpilih. Pesan validasi (misalnya nama kembar) tampil di bawah form kecil.
 - **Anggota** (admin & pustakawan): kartu anggota dengan status, kuota pinjam aktif, dan jenis keanggotaan. Admin: Edit/Hapus. Pustakawan: **Pinjamkan Buku** (membuka form peminjaman dengan anggota terpilih).
 - **Peminjaman** (admin & pustakawan): kartu dengan sampul, anggota, jatuh tempo, dan denda; tab status menampilkan jumlahnya; pengajuan menunggu selalu di urutan teratas. Aksi: Setujui/Tolak, Kembalikan, Detail; Hapus hanya untuk admin.
-
-## Animasi
-
-Seluruh halaman setelah login (user, pustakawan, admin) serta halaman login/register memakai `public/css/motion.css` dan `public/js/motion.js`:
-
-- elemen masuk berurutan saat halaman dibuka, dan muncul saat di-scroll untuk bagian di bawah layar;
-- angka statistik berhitung naik, batang kuota/grafik/donut/cincin tumbuh, sampul di hero melayang pelan;
-- efek hover dan tekan pada tombol, kartu, menu, dan avatar; status "Menunggu"/"Terlambat" berdenyut halus;
-- bar progress di atas layar saat berpindah halaman, tombol berubah menjadi spinner setelah form dikirim, pesan sukses menghilang sendiri;
-- transisi antar halaman (View Transitions) pada browser yang mendukung.
-
-Semua animasi otomatis dimatikan bila perangkat memakai pengaturan "kurangi gerakan" (`prefers-reduced-motion`). Halaman awal publik (`/`) memiliki animasinya sendiri di `landing.css`.
 
 ## Data Master & Laporan Stok (admin)
 
