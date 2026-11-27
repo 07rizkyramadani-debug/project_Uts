@@ -10,12 +10,12 @@ Laravel 13 (PHP 8.4+), Modular Monolith, MySQL / PostgreSQL / SQLite, Laravel Sa
 |---|---|
 | `Auth` | Middleware `role`, API token Sanctum (kedaluwarsa otomatis), rate limiter |
 | `Catalog` | Buku, Penulis, Kategori (dua tingkat), Penerbit, ISBN (Value Object) |
-| `Membership` | Anggota (batas pinjam sama untuk semua: 5 buku, 14 hari, tanpa masa berlaku), tautan ke akun user |
+| `Membership` | Anggota (otomatis aktif saat akun mendaftar) dan Jenis Keanggotaan (Umum, Mahasiswa, Dosen) dengan batas pinjam dan lama pinjam masing-masing |
 | `Circulation` | Peminjaman, pengajuan & persetujuan, pengembalian, denda, event `BookBorrowed` |
 | `Shared` | Contract (interface) dan Custom Exception antar modul |
 
 Komunikasi antar modul hanya lewat `Modules\Shared\Contracts` dan Domain Event:
-`BookServiceInterface` (Catalog), `MemberServiceInterface` (Membership), `LoanQueryInterface` (Circulation, dipakai untuk mencegah penghapusan buku/anggota yang masih terikat peminjaman).
+`BookServiceInterface` (Catalog),`MemberServiceInterface` (Membership, termasuk `ensureMemberForUser` yang dipanggil saat registrasi), `LoanQueryInterface` (Circulation, dipakai untuk mencegah penghapusan buku/anggota yang masih terikat peminjaman).
 
 ## Instalasi
 ```bash
