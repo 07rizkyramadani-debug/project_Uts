@@ -34,7 +34,7 @@ Jangan commit berkas `.env` ke GitHub.
 |---|---|---|
 | Admin | admin@example.com | password123 |
 | Pustakawan | pustakawan@example.com | password123 |
-| User | user@example.com | password123 (sudah tertaut ke satu anggota) |
+| User | user@example.com | password123 (otomatis menjadi anggota aktif) |
 
 ## Hak akses (RBAC)
 | Fitur | Admin | Pustakawan | User |
@@ -48,10 +48,10 @@ Jangan commit berkas `.env` ke GitHub.
 | Lihat & tutup laporan stok habis | Ya | Tidak | Tidak |
 | Setujui / tolak pengajuan peminjaman | Ya | Ya | Tidak |
 | Hapus / pulihkan peminjaman | Ya | Tidak | Tidak |
-| Ajukan peminjaman & lihat "Pinjaman Saya" | Tidak | Tidak | Ya (jika akun tertaut ke anggota) |
+| Ajukan peminjaman & lihat "Pinjaman Saya" | Tidak | Tidak | Ya (akun otomatis menjadi anggota aktif) |
 
 ## Alur pengajuan peminjaman
-1. Admin/pustakawan menautkan akun user ke data anggota (form anggota).
+1. Akun user yang mendaftar langsung menjadi anggota aktif, tanpa penautan manual.
 2. User memilih buku di katalog lalu **Ajukan Pinjam** (status `pending`, stok belum berubah).
 3. Pustakawan **menyetujui** (stok berkurang, jatuh tempo dihitung) atau **menolak** (dengan alasan).
 4. Pustakawan mencatat **pengembalian**; denda keterlambatan dihitung otomatis.
@@ -87,7 +87,7 @@ Alamat `/` menampilkan halaman awal publik (`WelcomeController`, `resources/view
 ## Daftar buku, anggota, dan peminjaman (kartu)
 - **Daftar buku**: semua peran memakai tampilan kartu bersampul. Aksi berbeda per peran: admin mendapat **Edit** dan **Hapus** (beserta info penerbit, ISBN, dan penanda stok yang dilaporkan pustakawan); pustakawan **Laporkan stok**; user **Ajukan Pinjam**.
 - **Tambah buku (admin)**: penerbit, penulis, dan kategori baru bisa dibuat langsung dari form lewat tombol "＋ ... baru" (AJAX ke `POST /publishers`, `/authors`, `/categories` yang mengembalikan JSON `201`), lalu otomatis terpilih. Pesan validasi (misalnya nama kembar) tampil di bawah form kecil.
-- **Anggota** (admin & pustakawan): kartu anggota dengan status, kuota pinjam aktif, dan tautan akun. Admin: Edit/Hapus. Pustakawan: **Pinjamkan Buku** (membuka form peminjaman dengan anggota terpilih).
+- **Anggota** (admin & pustakawan): kartu anggota dengan status, kuota pinjam aktif, dan jenis keanggotaan. Admin: Edit/Hapus. Pustakawan: **Pinjamkan Buku** (membuka form peminjaman dengan anggota terpilih).
 - **Peminjaman** (admin & pustakawan): kartu dengan sampul, anggota, jatuh tempo, dan denda; tab status menampilkan jumlahnya; pengajuan menunggu selalu di urutan teratas. Aksi: Setujui/Tolak, Kembalikan, Detail; Hapus hanya untuk admin.
 
 ## Animasi
