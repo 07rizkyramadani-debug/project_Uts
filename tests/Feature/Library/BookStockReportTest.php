@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Modules\Catalog\Models\Author;
 use Modules\Catalog\Models\Book;
 use Modules\Catalog\Models\BookStockReport;
 
@@ -103,7 +104,7 @@ it('laporan otomatis selesai saat admin menambah stok buku', function () {
         'title' => $book->title,
         'isbn' => (string) $book->isbn,
         'total_stock' => 5,
-        'author_ids' => [\Modules\Catalog\Models\Author::factory()->create()->id],
+        'author_ids' => [Author::factory()->create()->id],
     ])->assertRedirect('/books');
 
     expect($report->fresh()->status)->toBe('resolved');

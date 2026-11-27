@@ -20,4 +20,3 @@ class CirculationServiceProvider extends ServiceProvider
         Event::listen(BookBorrowed::class, LogBookBorrowed::class);
     }
 }
-

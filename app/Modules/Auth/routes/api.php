@@ -16,4 +16,3 @@ Route::prefix('api')->middleware('api')->group(function () {
         Route::post('logout', [AuthTokenController::class, 'logout'])->name('api.logout');
     });
 });
-

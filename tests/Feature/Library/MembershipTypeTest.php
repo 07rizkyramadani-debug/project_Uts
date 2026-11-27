@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Modules\Catalog\Models\Book;
 use Modules\Membership\Models\Member;
 use Modules\Membership\Models\MembershipType;
 use Modules\Membership\Services\MemberService;
@@ -90,7 +91,7 @@ it('form anggota memilih jenis keanggotaan dan menolak jenis yang tidak ada', fu
 });
 
 it('laporan stok memakai Form Request dengan pesan error informatif', function () {
-    $book = Modules\Catalog\Models\Book::factory()->outOfStock()->create();
+    $book = Book::factory()->outOfStock()->create();
 
     $this->actingAs($this->pustakawan)->post("/books/{$book->id}/report-stock", ['note' => str_repeat('x', 300)])
         ->assertSessionHasErrors(['note' => 'Catatan laporan maksimal 255 karakter.']);

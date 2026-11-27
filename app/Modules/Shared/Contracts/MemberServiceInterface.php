@@ -31,4 +31,3 @@ interface MemberServiceInterface
     /** Daftar anggota yang boleh meminjam (untuk form peminjaman). */
     public function listActiveMembers(): array;
 }
-

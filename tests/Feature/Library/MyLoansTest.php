@@ -182,11 +182,15 @@ describe('pengajuan peminjaman', function () {
         expect(Loan::count())->toBe(1);
     });
 
-    it('akun tanpa anggota tidak bisa mengajukan; admin/pustakawan tidak lewat jalur user', function () {
-        ($this->submit)(null, User::factory()->create(['role' => 'user']))->assertForbidden();
-        ($this->submit)(null, $this->pustakawan)->assertForbidden();
+    it('akun user tanpa data anggota otomatis diaktifkan lalu bisa mengajukan; pustakawan tidak lewat jalur user', function () {
+        $baru = User::factory()->create(['role' => 'user']);
 
-        expect(Loan::count())->toBe(0);
+        ($this->submit)(null, $baru)->assertSessionHasNoErrors()->assertRedirect('/my-loans');
+        expect(Member::where('user_id', $baru->id)->where('status', 'active')->exists())->toBeTrue();
+        expect(Loan::count())->toBe(1);
+
+        ($this->submit)(null, $this->pustakawan)->assertForbidden();
+        expect(Loan::count())->toBe(1);
     });
 
     it('user mengajukan langsung dari daftar buku dan halaman detail buku', function () {
@@ -203,8 +207,8 @@ describe('pengajuan peminjaman', function () {
         $this->actingAs($this->account)->get('/books')->assertSee('Stok habis');
     });
 
-    it('tombol ajukan tidak muncul untuk akun tanpa anggota maupun pustakawan, dan form lama diarahkan ke daftar buku', function () {
-        $this->actingAs(User::factory()->create(['role' => 'user']))->get('/books')->assertDontSee('Ajukan Pinjam');
+    it('tombol ajukan muncul untuk akun user (anggota otomatis) tetapi tidak untuk pustakawan, dan form lama diarahkan ke daftar buku', function () {
+        $this->actingAs(User::factory()->create(['role' => 'user']))->get('/books')->assertSee('Ajukan Pinjam');
         $this->actingAs($this->pustakawan)->get('/books')->assertDontSee('Ajukan Pinjam');
 
         $this->actingAs($this->account)->get('/my-loans/create')->assertRedirect('/books');

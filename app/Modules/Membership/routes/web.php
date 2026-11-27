@@ -21,4 +21,3 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
         Route::resource('membership-types', MembershipTypeController::class)->except(['show']);
     });
 });
-

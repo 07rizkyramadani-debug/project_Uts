@@ -44,5 +44,3 @@ class BookNotAvailableException extends Exception
         return back()->withInput()->withErrors(['stock' => $this->getMessage()]);
     }
 }
-
-

@@ -17,4 +17,3 @@ class BookBorrowed
         public Loan $loan
     ) {}
 }
-

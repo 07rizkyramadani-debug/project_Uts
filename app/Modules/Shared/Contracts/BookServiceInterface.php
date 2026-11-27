@@ -29,4 +29,3 @@ interface BookServiceInterface
      */
     public function getCoverMap(array $bookIds): array;
 }
-
