@@ -3,21 +3,24 @@
 UTS Backend Development (DT199) – Universitas AMIKOM Yogyakarta. Studi kasus no. 1.
 
 ## Teknologi
+
 Laravel 13 (PHP 8.4+), Modular Monolith, MySQL / PostgreSQL / SQLite, Laravel Sanctum (sesi web + token API), RBAC (admin / pustakawan / user), Blade, Pest, Pint, Git + GitHub.
 
 ## Struktur Modul (`app/Modules/`)
-| Modul | Isi |
-|---|---|
-| `Auth` | Middleware `role`, API token Sanctum (kedaluwarsa otomatis), rate limiter |
-| `Catalog` | Buku, Penulis, Kategori (dua tingkat), Penerbit, ISBN (Value Object) |
-| `Membership` | Anggota (otomatis aktif saat akun mendaftar) dan Jenis Keanggotaan (Umum, Mahasiswa, Dosen) dengan batas pinjam dan lama pinjam masing-masing |
-| `Circulation` | Peminjaman, pengajuan & persetujuan, pengembalian, denda, event `BookBorrowed` |
-| `Shared` | Contract (interface) dan Custom Exception antar modul |
+
+| Modul         | Isi                                                                                                                                           |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Auth`        | Middleware `role`, API token Sanctum (kedaluwarsa otomatis), rate limiter                                                                     |
+| `Catalog`     | Buku, Penulis, Kategori (dua tingkat), Penerbit, ISBN (Value Object)                                                                          |
+| `Membership`  | Anggota (otomatis aktif saat akun mendaftar) dan Jenis Keanggotaan (Umum, Mahasiswa, Dosen) dengan batas pinjam dan lama pinjam masing-masing |
+| `Circulation` | Peminjaman, pengajuan & persetujuan, pengembalian, denda, event `BookBorrowed`                                                                |
+| `Shared`      | Contract (interface) dan Custom Exception antar modul                                                                                         |
 
 Komunikasi antar modul hanya lewat `Modules\Shared\Contracts` dan Domain Event:
 `BookServiceInterface` (Catalog),`MemberServiceInterface` (Membership, termasuk `ensureMemberForUser` yang dipanggil saat registrasi), `LoanQueryInterface` (Circulation, dipakai untuk mencegah penghapusan buku/anggota yang masih terikat peminjaman).
 
 ## Instalasi
+
 ```bash
 composer install
 composer update laravel/sanctum        # jika Sanctum belum terpasang di vendor
@@ -27,30 +30,34 @@ php artisan migrate:fresh --seed
 npm install && npm run build
 php artisan serve
 ```
+
 Jangan commit berkas `.env` ke GitHub.
 
 ## Akun contoh (seeder)
-| Peran | Email | Password |
-|---|---|---|
-| Admin | admin@example.com | password123 |
-| Pustakawan | pustakawan@example.com | password123 |
-| User | user@example.com | password123 (otomatis menjadi anggota aktif) |
+
+| Peran      | Email                  | Password                                     |
+| ---------- | ---------------------- | -------------------------------------------- |
+| Admin      | admin@example.com      | password123                                  |
+| Pustakawan | pustakawan@example.com | password123                                  |
+| User       | user@example.com       | password123 (otomatis menjadi anggota aktif) |
 
 ## Hak akses (RBAC)
-| Fitur | Admin | Pustakawan | User |
-|---|---|---|---|
-| Lihat katalog, penulis, kategori | Ya | Ya | Ya |
-| CRUD buku, penulis, kategori, penerbit, pulihkan data terhapus | Ya | Tidak | Tidak |
-| Tambah anggota & lihat daftar anggota | Ya | Ya | Tidak |
-| Ubah / hapus anggota | Ya | Tidak | Tidak |
-| Catat peminjaman, pengembalian | Ya | Ya | Tidak |
-| Laporkan buku yang stoknya habis ke admin | Tidak | Ya | Tidak |
-| Lihat & tutup laporan stok habis | Ya | Tidak | Tidak |
-| Setujui / tolak pengajuan peminjaman | Ya | Ya | Tidak |
-| Hapus / pulihkan peminjaman | Ya | Tidak | Tidak |
-| Ajukan peminjaman & lihat "Pinjaman Saya" | Tidak | Tidak | Ya (akun otomatis menjadi anggota aktif) |
+
+| Fitur                                                          | Admin | Pustakawan | User                                     |
+| -------------------------------------------------------------- | ----- | ---------- | ---------------------------------------- |
+| Lihat katalog, penulis, kategori                               | Ya    | Ya         | Ya                                       |
+| CRUD buku, penulis, kategori, penerbit, pulihkan data terhapus | Ya    | Tidak      | Tidak                                    |
+| Tambah anggota & lihat daftar anggota                          | Ya    | Ya         | Tidak                                    |
+| Ubah / hapus anggota                                           | Ya    | Tidak      | Tidak                                    |
+| Catat peminjaman, pengembalian                                 | Ya    | Ya         | Tidak                                    |
+| Laporkan buku yang stoknya habis ke admin                      | Tidak | Ya         | Tidak                                    |
+| Lihat & tutup laporan stok habis                               | Ya    | Tidak      | Tidak                                    |
+| Setujui / tolak pengajuan peminjaman                           | Ya    | Ya         | Tidak                                    |
+| Hapus / pulihkan peminjaman                                    | Ya    | Tidak      | Tidak                                    |
+| Ajukan peminjaman & lihat "Pinjaman Saya"                      | Tidak | Tidak      | Ya (akun otomatis menjadi anggota aktif) |
 
 ## Alur pengajuan peminjaman
+
 1. Akun user yang mendaftar langsung menjadi anggota aktif, tanpa penautan manual.
 2. User memilih buku di katalog lalu **Ajukan Pinjam** (status `pending`, stok belum berubah).
 3. Pustakawan **menyetujui** (stok berkurang, jatuh tempo dihitung) atau **menolak** (dengan alasan).
@@ -60,38 +67,48 @@ Buku atau anggota yang masih punya peminjaman berjalan / pengajuan menunggu **ti
 (`ResourceInUseException`). Penulis, kategori, dan penerbit yang masih dipakai juga tidak dapat dihapus.
 
 ## API (Sanctum token)
+
 `POST /api/register`, `POST /api/login`, `GET /api/me`, `POST /api/logout`, `GET /api/books`, `POST /api/loans`, `POST /api/loans/{id}/return`.
+
 - Rate limit: login/register 5 per menit, endpoint lain 60 per menit.
 - Token kedaluwarsa setelah `SANCTUM_TOKEN_EXPIRATION` menit (default 1440).
 - CORS diatur di `config/cors.php` (`CORS_ALLOWED_ORIGINS`).
 
 ## Pengujian
+
 ```bash
-php artisan test        # 128 test (Pest), termasuk arch test batas modul
+php artisan test        # 198 test (Pest), termasuk arch test batas modul
+php artisan test --filter=MyLoansTest   # menjalankan satu berkas tes
 vendor/bin/pint         # code style
 ```
 
 ## Sampul buku
+
 Gambar sampul disajikan lewat route `book-covers/{file}` (`BookCoverController`), sehingga tampil tanpa `php artisan storage:link` dan tidak bergantung pada nilai `APP_URL`. Sampul bawaan ada di `database/seeders/covers` dan disalin ke `storage/app/public/covers` saat `php artisan migrate:fresh --seed`. Bila gambar gagal dimuat, tampil sampul otomatis (gradien + judul).
 
 ## Halaman awal (landing page)
+
 Alamat `/` menampilkan halaman awal publik (`WelcomeController`, `resources/views/landing.blade.php`, `public/css/landing.css`) berisi pengenalan sistem, contoh sampul koleksi, statistik, fitur, cara kerja, FAQ, serta tombol Masuk dan Daftar. Pengguna yang sudah login langsung diarahkan ke dashboard. Halaman ini tidak memerlukan build Vite.
 
 ## Dashboard & riwayat peminjaman
-- **User**: sapaan sesuai waktu, ringkasan *Total Buku Dipinjam*, *Sedang Dipinjam*, pengajuan, dan denda; kuota pinjam; daftar peminjaman berjalan; riwayat terbaru; rekomendasi buku tersedia.
+
+- **User**: sapaan sesuai waktu, ringkasan _Total Buku Dipinjam_, _Sedang Dipinjam_, pengajuan, dan denda; kuota pinjam; daftar peminjaman berjalan; riwayat terbaru; rekomendasi buku tersedia.
 - **Pustakawan**: statistik operasional, grafik aktivitas 7 hari, komposisi status peminjaman, pengajuan yang perlu ditinjau, peminjaman terlambat, peminjaman terbaru, buku terpopuler, dan pintasan.
-- **Admin**: seluruh tampilan pustakawan ditambah pintasan data master dan jumlah pengguna per peran; halaman *Dashboard Admin* berisi komposisi pengguna dan pengguna terbaru.
+- **Admin**: seluruh tampilan pustakawan ditambah pintasan data master dan jumlah pengguna per peran; halaman _Dashboard Admin_ berisi komposisi pengguna dan pengguna terbaru.
 - **Pinjaman Saya** (user): ringkasan, kartu peminjaman berjalan, dan **Riwayat peminjaman** (dikembalikan/ditolak, 8 per halaman).
 - Sampul pada daftar pinjaman diambil lewat contract `BookServiceInterface::getCoverMap()` sehingga modul Circulation tidak mengakses Catalog secara langsung.
 
 ## Daftar buku, anggota, dan peminjaman (kartu)
+
 - **Daftar buku**: semua peran memakai tampilan kartu bersampul. Aksi berbeda per peran: admin mendapat **Edit** dan **Hapus** (beserta info penerbit, ISBN, dan penanda stok yang dilaporkan pustakawan); pustakawan **Laporkan stok**; user **Ajukan Pinjam**.
 - **Tambah buku (admin)**: penerbit, penulis, dan kategori baru bisa dibuat langsung dari form lewat tombol "＋ ... baru" (AJAX ke `POST /publishers`, `/authors`, `/categories` yang mengembalikan JSON `201`), lalu otomatis terpilih. Pesan validasi (misalnya nama kembar) tampil di bawah form kecil.
 - **Anggota** (admin & pustakawan): kartu anggota dengan status, kuota pinjam aktif, dan jenis keanggotaan. Admin: Edit/Hapus. Pustakawan: **Pinjamkan Buku** (membuka form peminjaman dengan anggota terpilih).
 - **Peminjaman** (admin & pustakawan): kartu dengan sampul, anggota, jatuh tempo, dan denda; tab status menampilkan jumlahnya; pengajuan menunggu selalu di urutan teratas. Aksi: Setujui/Tolak, Kembalikan, Detail; Hapus hanya untuk admin.
 
 ## Animasi
+
 Seluruh halaman setelah login (user, pustakawan, admin) serta halaman login/register memakai `public/css/motion.css` dan `public/js/motion.js`:
+
 - elemen masuk berurutan saat halaman dibuka, dan muncul saat di-scroll untuk bagian di bawah layar;
 - angka statistik berhitung naik, batang kuota/grafik/donut/cincin tumbuh, sampul di hero melayang pelan;
 - efek hover dan tekan pada tombol, kartu, menu, dan avatar; status "Menunggu"/"Terlambat" berdenyut halus;
@@ -101,6 +118,7 @@ Seluruh halaman setelah login (user, pustakawan, admin) serta halaman login/regi
 Semua animasi otomatis dimatikan bila perangkat memakai pengaturan "kurangi gerakan" (`prefers-reduced-motion`). Halaman awal publik (`/`) memiliki animasinya sendiri di `landing.css`.
 
 ## Data Master & Laporan Stok (admin)
+
 - **Data Master** (Penulis, Kategori, Penerbit) berbentuk kartu tanpa tabel: tab menampilkan jumlah data, ada ringkasan, pencarian (penulis & penerbit), dan aksi Edit/Hapus. Kategori tampil sebagai kartu kelompok berisi sub-kategori dengan tombol **Tambah sub-kategori** (induk terpilih otomatis).
-- **Laporan Stok**: kartu per laporan (sampul, penulis, stok saat ini, pelapor, catatan) dengan tab *Semua / Menunggu / Selesai* beserta jumlahnya; aksi **Tambah Stok** dan **Tandai Selesai**.
+- **Laporan Stok**: kartu per laporan (sampul, penulis, stok saat ini, pelapor, catatan) dengan tab _Semua / Menunggu / Selesai_ beserta jumlahnya; aksi **Tambah Stok** dan **Tandai Selesai**.
 - Kedua halaman memakai sistem animasi yang sama (`motion.css`/`motion.js`): kartu masuk berurutan, sub-kategori dan chip muncul bertahap, badge stok 0 bergoyang halus, laporan menunggu berpendar lembut.
