@@ -34,11 +34,12 @@ php artisan serve
 Jangan commit berkas `.env` ke GitHub.
 
 ## Akun contoh (seeder)
-| Peran | Email | Password |
-|---|---|---|
-| Admin | admin@example.com | password123 |
+
+| Peran      | Email                  | Password    |
+| ---------- | ---------------------- | ----------- |
+| Admin      | admin@example.com      | password123 |
 | Pustakawan | pustakawan@example.com | password123 |
-| User | user@example.com | password123  |
+| User       | user@example.com       | password123 |
 
 ## Hak akses (RBAC)
 
@@ -109,3 +110,11 @@ Alamat `/` menampilkan halaman awal publik (`WelcomeController`, `resources/view
 - **Data Master** (Penulis, Kategori, Penerbit) berbentuk kartu tanpa tabel: tab menampilkan jumlah data, ada ringkasan, pencarian (penulis & penerbit), dan aksi Edit/Hapus. Kategori tampil sebagai kartu kelompok berisi sub-kategori dengan tombol **Tambah sub-kategori** (induk terpilih otomatis).
 - **Laporan Stok**: kartu per laporan (sampul, penulis, stok saat ini, pelapor, catatan) dengan tab _Semua / Menunggu / Selesai_ beserta jumlahnya; aksi **Tambah Stok** dan **Tandai Selesai**.
 - Kedua halaman memakai sistem animasi yang sama (`motion.css`/`motion.js`): kartu masuk berurutan, sub-kategori dan chip muncul bertahap, badge stok 0 bergoyang halus, laporan menunggu berpendar lembut.
+
+## Pembagian Tugas
+
+| No  | Nama / NIM                            | Peran                 | Rincian tugas                                                                                                   |
+| --- | ------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | Rizky Dwi Rhamadani 25.01.5238        | Auth & Catalog        | Autentikasi Sanctum, RBAC, modul Catalog (CRUD buku, penulis, kategori, penerbit, sampul), seeder koleksi buku. |
+| 2   | Rahmat Pratama Rhamadani 25.01.5239   | Membership & Shared   | Modul Membership (anggota, jenis keanggotaan), Contract, Custom Exception, Form Request, pengujian Pest.        |
+| 3   | Satria Kurnia Sutomo Putra 25.01.5241 | Circulation & Laporan | Modul Circulation (peminjaman, pengembalian, denda, transaction, event), dashboard, laporan, video demo.        |
